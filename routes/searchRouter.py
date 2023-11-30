@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
-from db import addNewFood, getFoods
+from services.foodService import getFoods, addNewFood
 from middlewares.basicAuth import basicAuthMiddleware
 
 class AddFood(BaseModel):
