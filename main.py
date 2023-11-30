@@ -1,17 +1,16 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from db import addNewFood, getFoods
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from routes.mainRouter import mainRouter
+from dotenv import load_dotenv
 
-class AddFood(BaseModel):
-  food: str
-
+load_dotenv()
 app = FastAPI()
 
-@app.get("/foods")
-def get_foods(name: str = ''):
-  return getFoods(name)
+app.add_middleware(
+  CORSMiddleware,
+  allow_credentials=True,
+  allow_methods=["*"],
+  allow_headers=["*"]
+)
 
-@app.post("/foods")
-def add_food(body: AddFood):
-  addNewFood(body.food)
-  return { "status": "ok" }
+app.include_router(mainRouter, prefix="/api")

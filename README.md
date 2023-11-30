@@ -12,6 +12,10 @@ Install dependencies
 
     pip install -r requirements.txt
 
+Copy .env
+
+    cp .env.example .env
+
 Run project
 
     uvicorn main:app --host 127.0.0.1 --port 3003 --reload
