@@ -4,7 +4,9 @@ from services.foodService import getFoods, addNewFood
 from middlewares.basicAuth import basicAuthMiddleware
 
 class AddFood(BaseModel):
+  id: int
   food: str
+  active: bool
 
 searchRouter = APIRouter(dependencies=[Depends(basicAuthMiddleware)])
 
@@ -14,5 +16,5 @@ def get_foods(name: str = ''):
 
 @searchRouter.post("/train")
 def add_food(body: AddFood):
-  addNewFood(body.food)
+  addNewFood(body.id, body.food, body.active)
   return { "status": "ok" }

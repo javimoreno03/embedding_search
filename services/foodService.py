@@ -1,23 +1,18 @@
-from db import foods, foodsEmbedding
-from services.embeddingService import searchFoods, embedString
+from chroma_config.config import foodCollection
 
-def addNewFood(food: str):
-  foodEmbedding = embedString(food)
-  foods.append(food)
-  foodsEmbedding.append(foodEmbedding)
+def addNewFood(id: int, food: str, active: bool):
+  foodCollection.add(ids=[str(id)], documents=[food], metadatas=[{ 'active': active }])
 
 def getFoods(nameToFind:str = ''):
-  if len(foods) <= 0:
-    return []
-
-  response = searchFoods(nameToFind, foodsEmbedding)
+  res = foodCollection.query(query_texts=[nameToFind], where={ 'active': True },  n_results=5)
   
-  foodsFound = []
-  
-  for index, score in response:
-    foodsFound.append({
-      'name': foods[index],
-      'score': score
+  foodsResponse = []
+  for i in range(len(res['ids'][0])):
+    foodsResponse.append({
+      'id': res['ids'][0][i],
+      'food': res['documents'][0][i],
+      'active': res['metadatas'][0][i]['active'],
+      'distance': res['distances'][0][i]
     })
-
-  return foodsFound
+  
+  return foodsResponse

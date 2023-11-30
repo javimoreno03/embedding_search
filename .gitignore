@@ -1,3 +1,4 @@
 morfy_embeddings_api
 __pycache__/
 .env
+chroma_config/persist-data
