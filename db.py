@@ -1,4 +1,4 @@
-from embeddingUtil import searchFoods, embedString
+from services.embeddingService import searchFoods, embedString
 
 foods:list[str] = []
 foodsEmbedding:list[list[float]] = []
